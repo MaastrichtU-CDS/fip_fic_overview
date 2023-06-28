@@ -36,7 +36,7 @@ where {
   bind (str(?resourcelabel) as ?reslabel)
   bind (coalesce(?reslabel, ?res) as ?resourcelabel2)
   bind (coalesce(?communityLabel, ?c) as ?community)
-  filter (?value = "3")
+  #filter (?value = "3") #insert value 1,2,3 for either "to be developed", "planned" or "current" use of resources.   
   filter (strstarts(?FIPquestion, "I2-D") || strstarts(?FIPquestion, "I3-MD")) 
 } 
 order by ?community ?FIPquestion
