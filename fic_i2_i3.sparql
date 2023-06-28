@@ -39,4 +39,4 @@ where {
   filter (?value = "3")
   filter (strstarts(?FIPquestion, "I2-D") || strstarts(?FIPquestion, "I3-MD")) 
 } 
-order by ?community ?fip ?FIPquestion
+order by ?community ?FIPquestion
