@@ -4,9 +4,26 @@ on:
   schedule: 
     - cron: "*/5 * * * *"
 jobs:
-  report:
-    runs-on: ubuntu-latest
-    steps:
-      - name: create readme.md
-        run: bash ${GITHUB_WORKSPACE}/run.sh
       
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Fetches all history so we can push back to it
+
+      - name: Set up Git user
+        run: |
+          git config --global user.name 'matthijssloep'
+          git config --global user.email 'm.sloep@gmail.com'
+
+      - name: Run script
+        run: bash ${GITHUB_WORKSPACE}/run.sh
+
+      - name: Commit and push changes
+        run: |
+          git add README.md
+          git commit -m "Update README.md from script"
+          git push
