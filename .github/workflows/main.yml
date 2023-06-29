@@ -8,4 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: create readme
-        run: run.sh
+        run: |
+         chmod +x ./run.sh
+         ./run.sh
+        shell: bash
