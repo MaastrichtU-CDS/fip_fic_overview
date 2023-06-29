@@ -2,7 +2,7 @@ name: Run query and update table
 
 on: 
   schedule: 
-    - cron: "0 0 * * *"
+    - cron: "*/5 * * * *"
 jobs:
   report:
     runs-on: ubuntu-latest
