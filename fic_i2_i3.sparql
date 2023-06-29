@@ -2,7 +2,7 @@ prefix fip: <https://w3id.org/fair/fip/terms/>
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 select distinct 
-?community 
+?FAIR_Implementation_Community 
 ?fip
 ?FIPquestion 
 ?resource 
@@ -36,7 +36,8 @@ where {
   bind (str(?resourcelabel) as ?reslabel)
   bind (coalesce(?reslabel, ?res) as ?resourcelabel2)
   bind (coalesce(?communityLabel, ?c) as ?community)
+  bind (replace(?community, "\\\|", "-", "i") as ?FAIR_Implementation_Community) 
   #filter (?value = "3") #insert value 1,2,3 for either "to be developed", "planned" or "current" use of resources.   
   filter (strstarts(?FIPquestion, "I2-D") || strstarts(?FIPquestion, "I3-MD")) 
 } 
-order by ?community ?FIPquestion
+order by ?FAIR_Implementation_Community ?FIPquestion
