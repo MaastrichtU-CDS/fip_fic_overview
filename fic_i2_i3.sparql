@@ -6,7 +6,7 @@ select distinct
 ?fip
 ?FIPquestion 
 ?resource 
-?resourcelabel2 
+?label
 
 where {
   ?nanopub rdf:type <http://www.nanopub.org/nschema#Nanopublication>;
@@ -35,6 +35,7 @@ where {
   bind (replace(str(?resource), "^.*?(#|/)([^/#]*/?[^/#]*)/?$", "$2") as ?res)
   bind (str(?resourcelabel) as ?reslabel)
   bind (coalesce(?reslabel, ?res) as ?resourcelabel2)
+  bind (replace(?resourcelabel2, "\\\|", "-", "i") as ?label) 
   bind (coalesce(?communityLabel, ?c) as ?community)
   bind (replace(?community, "\\\|", "-", "i") as ?FAIR_Implementation_Community) 
   #filter (?value = "3") #insert value 1,2,3 for either "to be developed", "planned" or "current" use of resources.   
