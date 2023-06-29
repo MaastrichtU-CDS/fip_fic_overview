@@ -7,8 +7,6 @@ jobs:
   report:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - name: create readme
-        run: |
-         chmod +x ./run.sh
-         ./run.sh
-        shell: bash
+        run: ./run.sh
