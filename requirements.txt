@@ -1,3 +1,4 @@
 git+https://github.com/MaastrichtU-CDS/datasources.git
 pandas
 tabulate
+sparqlwrapper
