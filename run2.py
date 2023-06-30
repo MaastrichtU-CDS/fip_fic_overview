@@ -4,7 +4,7 @@ import tabulate
 
 sparql = SPARQLWrapper("http://130.60.24.146:7883/sparql")
 
-query ="""
+query = """
 prefix fip: <https://w3id.org/fair/fip/terms/>
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
