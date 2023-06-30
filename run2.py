@@ -1,4 +1,3 @@
-!pip install SPARQLWrapper
 from SPARQLWrapper import SPARQLWrapper, JSON
 import pandas as pd
 import tabulate
