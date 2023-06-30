@@ -2,6 +2,13 @@
 This repository gives a daily update of available FAIR implementation communities, profiles and the respective answers to I2 data and I3 metadata. 
  
 Currently there are 50 distinct FAIR implementation communities that have created 91 FAIR implementation profiles together.
+
+<style>
+table {
+  width: 100%;
+}
+</style>
+
 | FAIR_Implementation_Community                                                                                 | fip                                                              | FIPquestion   | resource                                                                                    | resourcelabel2                                                                                                     |
 |---------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------|---------------|---------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
 | ACTRIS ARES community - ACTRIS Data Center unit for Aerosol REmote Sensing                                    | https://w3id.org/fip/wizard/a3ac9c3e-be16-41b4-95df-9c71b1465416 | I2-D          | http://purl.org/np/RAHPk6yucxc4eiPowV4VIrHajzzbBXJKoVtfqBJIdw1Ao                            | np/RAHPk6yucxc4eiPowV4VIrHajzzbBXJKoVtfqBJIdw1Ao                                                                   |
