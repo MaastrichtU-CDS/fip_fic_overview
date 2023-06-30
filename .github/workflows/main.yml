@@ -18,7 +18,17 @@ jobs:
         run: |
           git config --global user.name 'matthijssloep'
           git config --global user.email 'm.sloep@gmail.com'
+          
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8  
 
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          
       - name: Run script
         run: bash ${GITHUB_WORKSPACE}/run.sh
 
