@@ -30,7 +30,8 @@ jobs:
           pip install -r requirements.txt
           
       - name: Run batch file
-        run:  ${GITHUB_WORKSPACE}\run2.bat
+        run: |
+          cmd /c "${GITHUB_WORKSPACE}\run2.bat"
 
       - name: Commit and push changes
         run: |
