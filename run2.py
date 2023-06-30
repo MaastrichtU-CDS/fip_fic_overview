@@ -4,23 +4,22 @@ import tabulate
 
 sparql = SPARQLWrapper("http://130.60.24.146:7883/sparql")
 
-query = """
+query ="""
 prefix fip: <https://w3id.org/fair/fip/terms/>
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-select distinct
-?community
-?FAIR_Implementation_Community
-?fip
-?FIPquestion
-?resource
-?resourcelabel2
+select distinct 
+?FIC 
+?FIP
+?FIPquestion 
+?resource 
+?label
 
 where {
   ?nanopub rdf:type <http://www.nanopub.org/nschema#Nanopublication>;
     <http://purl.org/nanopub/admin/hasSubIri> ?decl;
-    <http://www.w3.org/ns/prov#wasDerivedFrom> ?fip.
-
+    <http://www.w3.org/ns/prov#wasDerivedFrom> ?FIP.
+  
   ?decl a fip:FIP-Declaration ;
     fip:refers-to-question ?question ;
     fip:declared-by ?communityNanoPub ;
@@ -43,12 +42,14 @@ where {
   bind (replace(str(?resource), "^.*?(#|/)([^/#]*/?[^/#]*)/?$", "$2") as ?res)
   bind (str(?resourcelabel) as ?reslabel)
   bind (coalesce(?reslabel, ?res) as ?resourcelabel2)
+  bind (replace(?resourcelabel2, "\\\|", "-", "i") as ?label) 
   bind (coalesce(?communityLabel, ?c) as ?community)
-  bind (replace(?community, "\\\|", "-", "i") as ?FAIR_Implementation_Community) 
-  #filter (?value = "3") #insert value 1,2,3 for either "to be developed", "planned" or "current" use of resources.
-  filter (strstarts(?FIPquestion, "I2-D") || strstarts(?FIPquestion, "I3-MD"))
-}
-order by ?community ?FIPquestion"""
+  bind (replace(?community, "\\\|", "-", "i") as ?FIC) 
+  #filter (?value = "3") #insert value 1,2,3 for either "to be developed", "planned" or "current" use of resources.   
+  filter (strstarts(?FIPquestion, "I2-D") || strstarts(?FIPquestion, "I3-MD")) 
+} 
+order by ?FIC ?FIPquestion
+"""
 
 # Insert SPARQL query, return results
 sparql.setQuery(query)
@@ -62,7 +63,7 @@ results_raw = results['results']['bindings']
 results = []
 for row in results_raw:
     result = {}
-    for column in ['FAIR_Implementation_Community', 'fip', 'FIPquestion', 'resource', 'resourcelabel2']:
+    for column in ['FIC', 'FIP', 'FIPquestion', 'resource', 'label']:
         result[column] = row[column]['value']
     results.append(result)
 
@@ -70,9 +71,22 @@ for row in results_raw:
 df = pd.DataFrame(results)
 
 # How many unique communities are there?
-num_distinct_communities = df['FAIR_Implementation_Community'].nunique()
-num_distinct_fip = df['fip'].nunique()
-print(f'Currently there are {num_distinct_communities} distinct FAIR implementation communities that have created {num_distinct_fip} FAIR implementation profiles together.')
+num_distinct_communities = df['FIC'].nunique()
+num_distinct_fip = df['FIP'].nunique()
+print(f'Currently there are {num_distinct_communities} distinct FAIR implementation communities that have created {num_distinct_fip} FAIR implementation profiles together:')
+print("""<style>
+table {
+  width: 100%;
+}
+
+table td {
+  font-size: 10px;
+}
+.container-lg {
+  max-width: none !important;
+}
+</style>
+""" )
 
 if query is not None:
     print(tabulate.tabulate(df, headers='keys', showindex=False, tablefmt="github"))
