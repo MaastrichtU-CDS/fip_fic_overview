@@ -23,7 +23,7 @@ results_raw = results['results']['bindings']
 results = []
 for row in results_raw:
     result = {}
-    for column in ['FAIR_Implementation_Community','community', 'fip', 'FIPquestion', 'resource', 'resourcelabel2']:
+    for column in ['FAIR_Implementation_Community', 'fip', 'FIPquestion', 'resource', 'resourcelabel2']:
         result[column] = row[column]['value']
     results.append(result)
 
@@ -31,7 +31,7 @@ for row in results_raw:
 df = pd.DataFrame(results)
 
 # How many unique communities are there?
-num_distinct_communities = df['community'].nunique()
+num_distinct_communities = df['FAIR_Implementation_Community'].nunique()
 num_distinct_fip = df['fip'].nunique()
 print(f'Currently there are {num_distinct_communities} distinct FAIR implementation communities that have created {num_distinct_fip} FAIR implementation profiles together.')
 
