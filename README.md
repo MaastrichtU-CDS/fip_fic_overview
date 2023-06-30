@@ -1,5 +1,4 @@
-# Overview of FIP questions
-This repository contains a generated overview of the FIP questions I2 and I3.
-Please check [run.sh](run.sh) for the generation of the README.md file.
+# Overview of FAIR implementation communities and profiles
+This repository gives a daily update of available FAIR implementation communities, profiles and the respective answers to I2 data and I3 metadata.
 
 
