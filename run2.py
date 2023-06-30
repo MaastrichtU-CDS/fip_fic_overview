@@ -4,17 +4,56 @@ import tabulate
 
 sparql = SPARQLWrapper("http://130.60.24.146:7883/sparql")
 
-query = None
-with open('fic_i2_i3.sparql') as f:
-    query = f.read()
+query ="""
+prefix fip: <https://w3id.org/fair/fip/terms/>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
+select distinct
+?community
+?FAIR_Implementation_Community
+?fip
+?FIPquestion
+?resource
+?resourcelabel2
+
+where {
+  ?nanopub rdf:type <http://www.nanopub.org/nschema#Nanopublication>;
+    <http://purl.org/nanopub/admin/hasSubIri> ?decl;
+    <http://www.w3.org/ns/prov#wasDerivedFrom> ?fip.
+
+  ?decl a fip:FIP-Declaration ;
+    fip:refers-to-question ?question ;
+    fip:declared-by ?communityNanoPub ;
+    ?rel ?resource .
+  values ?rel { fip:declares-current-use-of fip:declares-planned-use-of }
+  optional { ?communityNanoPub a ?communityType . }
+  optional { ?resource rdfs:label ?resourcelabel . }
+  optional { ?communityNanoPub rdfs:label ?communityLabel . }
+  optional {
+    values ?resourcetype { fip:Available-FAIR-Enabling-Resource fip:FAIR-Enabling-Resource-to-be-Developed }
+    ?resource a ?resourcetype
+  }
+
+  bind (replace(str(?communityNanoPub), ".*#", "") as ?c)
+  bind (replace(str(?question), "^.*-([^-MD]+(-[MD]+)?)$", "$1") as ?FIPquestion)
+  bind (concat(replace(?FIPquestion, "F|M", "0"), "x") as ?sort)
+  bind (replace(str(?rel), "^.*/declares-(.*)-use-of$", "$1") as ?r)
+  bind (replace(str(?resourcetype), "^.*/([^/-]*)-?FAIR-Enabling-Resource-?([^/]*)$", "$1$2") as ?rt)
+  bind (replace(replace(replace(concat(?r, "/", ?rt), "^.*/to-be-Developed$", "1"), "^planned/.*$", "2"), "^current/.*$", "3") as ?value)
+  bind (replace(str(?resource), "^.*?(#|/)([^/#]*/?[^/#]*)/?$", "$2") as ?res)
+  bind (str(?resourcelabel) as ?reslabel)
+  bind (coalesce(?reslabel, ?res) as ?resourcelabel2)
+  bind (coalesce(?communityLabel, ?c) as ?community)
+  bind (replace(?community, "\\\|", "-", "i") as ?FAIR_Implementation_Community) 
+  #filter (?value = "3") #insert value 1,2,3 for either "to be developed", "planned" or "current" use of resources.
+  filter (strstarts(?FIPquestion, "I2-D") || strstarts(?FIPquestion, "I3-MD"))
+}
+order by ?community ?FIPquestion"""
 
 # Insert SPARQL query, return results
 sparql.setQuery(query)
-
 sparql.setReturnFormat(JSON)
 results = sparql.query().convert()
-
 
 # The results are returned as a dictionary.  We're interested in the 'results' -> 'bindings' path
 results_raw = results['results']['bindings']
