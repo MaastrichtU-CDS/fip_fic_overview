@@ -1,0 +1,39 @@
+name: Daily query and update readme
+
+on: 
+  schedule: 
+    - cron: "*/5 * * * *"
+jobs:
+      
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Fetches all history so we can push back to it
+
+      - name: Set up Git user
+        run: |
+          git config --global user.name 'matthijssloep'
+          git config --global user.email 'm.sloep@gmail.com'
+          
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8  
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          
+      - name: Run batch file
+        run: run2.bat
+
+      - name: Commit and push changes
+        run: |
+          git add README.md
+          git commit -m "Update README.md from script"
+          git push
