@@ -31,7 +31,7 @@ jobs:
           
       - name: Run batch file
         run: |
-          cmd /c "%GITHUB_WORKSPACE%\run2.bat"
+          cmd /c "%GITHUB_WORKSPACE%/run2.bat"
 
       - name: Commit and push changes
         run: |
