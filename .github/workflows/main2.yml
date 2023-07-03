@@ -33,7 +33,13 @@ jobs:
         run: |
           cmd /c "%GITHUB_WORKSPACE%/run2.bat"
 
+      - name: Check for changes
+        id: check_changes
+        run: |
+          git diff --exit-code README.md || echo "::set-output name=changes::true"
+
       - name: Commit and push changes
+        if: steps.check_changes.outputs.changes == 'true'
         run: |
           git add README.md
           git commit -m "Update README.md from script"
