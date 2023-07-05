@@ -37,6 +37,10 @@ jobs:
         id: check_changes
         run: |
           git diff --exit-code README.md || echo "::set-output name=changes::true"
+          
+      - name: Display changes output
+        run: |
+          echo Changes output: %{{ steps.check_changes.outputs.changes }}%
 
       - name: Commit and push changes
         if: steps.check_changes.outputs.changes == 'true'
