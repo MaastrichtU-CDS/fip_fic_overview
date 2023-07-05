@@ -36,7 +36,7 @@ jobs:
       - name: Check for changes
         id: check_changes
         run: |
-          git diff --exit-code README.md || echo "changes=true" >> $GITHUB_ENV || true
+          git diff --quiet README.md || echo "changes=true" >> $GITHUB_ENV
           
       - name: Display changes output
         run: |
