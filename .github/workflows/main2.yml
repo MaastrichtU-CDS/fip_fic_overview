@@ -47,7 +47,7 @@ jobs:
           echo Changes output: ${{ env.changes }}
 
       - name: Commit and push changes
-        if: steps.check_changes.outputs.changes == 'true'
+        if: env.CHANGES == 'true'
         run: |
           git add README.md
           git commit -m "Update README.md from script"
