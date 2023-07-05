@@ -40,11 +40,10 @@ jobs:
           if ($changes) {
             echo "changes=true" >> $env:GITHUB_ENV
           }
-
           
       - name: Display changes output
         run: |
-          echo Changes output: ${{ env.changes }}
+          echo Changes output: ${{ env.CHANGES }}
 
       - name: Commit and push changes
         if: env.CHANGES == 'true'
